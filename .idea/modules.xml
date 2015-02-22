@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/WMSRF.iml" filepath="$PROJECT_DIR$/.idea/WMSRF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WMSService/.idea/WMSService.iml" filepath="$PROJECT_DIR$/../WMSService/.idea/WMSService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WMSUI/.idea/WMSUI.iml" filepath="$PROJECT_DIR$/../WMSUI/.idea/WMSUI.iml" />
+    </modules>
+  </component>
+</project>
