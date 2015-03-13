@@ -35,7 +35,6 @@ private
 
       set_shipment_value_from_input(to_validate, "value", "") if ! successfully_validated?(response)
 
-      p response
 
       #response = receive_shipment_and_reset_the_input   if all_validation_completed_successfully?(response)  
       
@@ -70,7 +69,7 @@ private
   end
   
   def prepare_for_case_receiving
-    ["purchase_order_nbr", "item", "quantity", "inner_pack"].each do |item|
+    ["purchase_order_nbr", "item", "quantity"].each do |item|
       index = shipment.find_index {|field| field["name"] == item}
       self.shipment[index]["to_validate"] = 'No' if index 
     end
@@ -113,8 +112,10 @@ private
   end 
   
  def any_more_to_validate?
+   p self.shipment
    self.shipment.each do |shipment_compoment|
-     if shipment_compoment["validated"] == false && shipment_compoment["to_validate"] == 'Yes' 
+     if shipment_compoment["validated"] == false && shipment_compoment["to_validate"] == 'Yes'
+       p shipment_compoment["name"]
        return true  
      end
    end
