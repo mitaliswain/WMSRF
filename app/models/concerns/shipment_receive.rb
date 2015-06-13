@@ -11,7 +11,9 @@ class ShipmentReceive
 
   def prepare_shipment_receiving_screen
     prepare_for_case_receiving if self.config_list[:Receiving_Type] == 'Case'
-    prepare_for_sku_receiving if self.config_list[:Receiving_Type] == 'SKU'  
+    prepare_for_sku_receiving if self.config_list[:Receiving_Type] == 'SKU'
+    prepare_for_serial_number_tracking_configuration
+    prepare_for_lot_tracking_configuration
     self.shipment
   end
   
@@ -21,6 +23,20 @@ class ShipmentReceive
   end
 
 private
+
+  def prepare_for_serial_number_tracking_configuration
+    ["serial_nbr"].each do |item|
+      index = shipment.find_index {|field| field["name"] == item}
+      self.shipment.delete_at(index) if self.config_list[:Serial_Number_Tracking] == 'false'
+    end
+  end
+
+  def prepare_for_lot_tracking_configuration
+    ["lot_number"].each do |item|
+      index = shipment.find_index {|field| field["name"] == item}
+      self.shipment.delete_at(index) if self.config_list[:Lot_Tracking_Mode] == 'false'
+    end
+  end
 
   def validate_shipment_and_reset_the_input(to_validate, value)
 
@@ -149,9 +165,10 @@ private
         coo:            shipment["coo"],
         item:           shipment["item"],
         quantity:       shipment["quantity"],
-        serial_nbr:  shipment["serial_nbr"],
         innerpack_qty:  shipment["inner_pack"]
-       } 
+       }
+    shipment = shipment.merge(serial_nbr:  shipment["serial_nbr"]) if shipment.has_key?("serial_nbr")
+
     response = RestClient.post(url,
     shipment: shipment){ | responses, request, result, &block |
       case responses.code
@@ -185,7 +202,8 @@ private
         quantity:       shipment_payload["quantity"],
         serial_nbr:  shipment_payload["serial_nbr"],
         innerpack_qty:  shipment_payload["inner_pack"]
-       } 
+       }
+    shipment_hash = shipment_hash.merge(serial_nbr:  shipment["serial_nbr"]) if shipment_hash.has_key?("serial_nbr")
     response = RestClient.post(url,
     shipment: shipment_hash) { | responses, request, result, &block |
       case responses.code
