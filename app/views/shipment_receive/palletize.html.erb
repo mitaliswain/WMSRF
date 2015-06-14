@@ -2,7 +2,7 @@
 
  User:<%=@user%> <%=@basic_parameters["client"]%>/<%=@basic_parameters["warehouse"]%>/<%=@basic_parameters["building"]%>/<%=@basic_parameters["channel"]%>
  <% @palletize.each_with_index do |receive, index| %>
- 	<% if receive["to_validate"] == "Yes"%>
+ 	<% if receive["to_validate"] == "true"%>
 	 	<% if receive["validated"] == false %>			
 			<%= editable_input(receive)%>
 			<input type="hidden" name="name" value="<%=receive["name"]%>">

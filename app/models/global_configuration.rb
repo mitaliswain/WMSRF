@@ -5,7 +5,7 @@ class GlobalConfiguration
   def configuration_list(params = {})    
     
     url = Properties.getUrl + "/configuration" 
-    response = RestClient.get url, {:params => {:selection => params.to_json}}
+    response = RestClient.get url, {:params => {:selection => params}}
     return JSON.parse(response)       
   end
   
@@ -32,7 +32,7 @@ class GlobalConfiguration
  def configuration_list_key_value(params = {})
    config_key_value_pair = {}
    configuration_list(params).each do |config|
-     config_key_value_pair = config_key_value_pair.merge({config["key"] => config["value"]})
+     config_key_value_pair = config_key_value_pair.merge({config['configuration_header']["key"] => config['configuration_header']["value"]})
    end
    config_key_value_pair.symbolize_keys
  end

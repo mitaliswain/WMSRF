@@ -7,6 +7,7 @@ class ShipmentReceive
     @shipment=shipment
     @basic_parameters = basic_parameters
     @config_list = GlobalConfiguration.new.configuration_list_key_value(module: 'RECEIVING')
+    p @config_list
   end
 
   def prepare_shipment_receiving_screen
@@ -18,7 +19,7 @@ class ShipmentReceive
   end
   
   def process_receiving(to_validate, value)
-    response = any_more_to_validate? ?  validate_shipment_and_reset_the_input(to_validate, value) : receive_shipment_and_reset_the_input  
+    response = validate_RF_input_and_update_RF_input(to_validate, value) if any_more_to_validate?
     return {shipment: self.shipment, status: response["status"], error: get_error_message(response)}
   end
 
@@ -38,7 +39,7 @@ private
     end
   end
 
-  def validate_shipment_and_reset_the_input(to_validate, value)
+  def validate_RF_input_and_update_RF_input(to_validate, value)
 
       set_shipment_value_from_input(to_validate, "value", value)
       response = validate_shipment(to_validate)
@@ -52,7 +53,7 @@ private
       set_shipment_value_from_input(to_validate, "value", "") if ! successfully_validated?(response)
 
 
-      #response = receive_shipment_and_reset_the_input   if all_validation_completed_successfully?(response)  
+      response = receive_shipment_and_reset_the_input   if all_validation_completed_successfully?(response)
       
       response      
   end
@@ -71,11 +72,11 @@ private
 
   def set_case_details(case_detail)    
     set_shipment_value_from_input("item", "value", case_detail["item"])
-    set_shipment_value_from_input("item", "to_validate", 'Yes')
+    set_shipment_value_from_input("item", "to_validate", 'true')
     set_shipment_value_from_input("item", "validated", true)
             
     set_shipment_value_from_input("quantity", "value", case_detail["quantity"])
-    set_shipment_value_from_input("quantity", "to_validate", 'Yes')
+    set_shipment_value_from_input("quantity", "to_validate", 'true')
     set_shipment_value_from_input("quantity", "validated", true)
   end
   
@@ -87,7 +88,7 @@ private
   def prepare_for_case_receiving
     ["purchase_order_nbr", "item", "quantity"].each do |item|
       index = shipment.find_index {|field| field["name"] == item}
-      self.shipment[index]["to_validate"] = 'No' if index 
+      self.shipment[index]["to_validate"] = 'false' if index
     end
   end
   
@@ -128,10 +129,8 @@ private
   end 
   
  def any_more_to_validate?
-   p self.shipment
    self.shipment.each do |shipment_compoment|
-     if shipment_compoment["validated"] == false && shipment_compoment["to_validate"] == 'Yes'
-       p shipment_compoment["name"]
+     if shipment_compoment["validated"] == false && shipment_compoment["to_validate"] == 'true'
        return true  
      end
    end
@@ -146,7 +145,40 @@ private
       end
     end    
     shipment
+ end
+
+  def validate_shipment(to_validate)
+    shipment_payload = extract_shipment
+    url = Properties.getUrl + '/shipment/' + to_validate + '/validate'
+
+    shipment = {
+        client:     self.basic_parameters["client"],
+        warehouse:  self.basic_parameters["warehouse"],
+        channel:    nil,
+        building:   nil,
+        shipment_nbr:   shipment_payload["shipment_nbr"],
+        location:       shipment_payload["location"],
+        case_id:        shipment_payload["case"],
+        lot_number:     shipment_payload["lot_number"],
+        coo:            shipment_payload["coo"],
+        item:           shipment_payload["item"],
+        quantity:       shipment_payload["quantity"],
+        serial_nbr:  shipment_payload["serial_nbr"],
+        innerpack_qty:  shipment_payload["inner_pack"]
+    }
+    shipment = shipment.merge(serial_nbr:  shipment["serial_nbr"]) if shipment.has_key?("serial_nbr")
+    response = RestClient.post(url, shipment: shipment) { | responses, request, result, &block |
+      case responses.code
+        when 200, 201, 422, 204
+          responses
+        else
+          message = responses.nil? ? {} : JSON.parse(responses)["message"]
+          {status: responses.code, message: message}.to_json
+      end
+    }
+    return JSON.parse(response)
   end
+
 
   def receive_shipment
     
@@ -184,39 +216,7 @@ private
       
   end
   
-  def validate_shipment(to_validate)
-    shipment_payload = extract_shipment
-      url = Properties.getUrl + '/shipment/' + to_validate + '/validate'
-      
-     shipment_hash = {
-        client:     self.basic_parameters["client"], 
-        warehouse:  self.basic_parameters["warehouse"],
-        channel:    nil,
-        building:   nil,
-        shipment_nbr:   shipment_payload["shipment_nbr"],
-        location:       shipment_payload["location"],
-        case_id:        shipment_payload["case"],
-        lot_number:     shipment_payload["lot_number"],
-        coo:            shipment_payload["coo"],
-        item:           shipment_payload["item"],
-        quantity:       shipment_payload["quantity"],
-        serial_nbr:  shipment_payload["serial_nbr"],
-        innerpack_qty:  shipment_payload["inner_pack"]
-       }
-    shipment_hash = shipment_hash.merge(serial_nbr:  shipment["serial_nbr"]) if shipment_hash.has_key?("serial_nbr")
-    response = RestClient.post(url,
-    shipment: shipment_hash) { | responses, request, result, &block |
-      case responses.code
-      when 200, 201, 422, 204
-        responses
-     else
-       message = responses.nil? ? {} : JSON.parse(responses)["message"]  
-      {status: responses.code, message: message}.to_json
-    end
-    }    
-    return JSON.parse(response)    
-  end
-  
+
   
   def extract_shipment
     shipment_payload = {}
