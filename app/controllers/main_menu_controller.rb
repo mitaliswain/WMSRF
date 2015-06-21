@@ -8,9 +8,7 @@ class MainMenuController < ApplicationController
 
   def create
     session[:basic_parameters] = {client: params[:client], warehouse: params[:warehouse], 
-                                  building: params[:building], channel: params[:channel]}     
-                                            
-    p session[:basic_parameters]
+                                  building: params[:building], channel: params[:channel]}
     redirect_to '/shipmentreceive/new' 
   end
   
