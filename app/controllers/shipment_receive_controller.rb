@@ -11,12 +11,12 @@ class ShipmentReceiveController < ApplicationController
                   {"name" => 'shipment_nbr',       "description"=> "Shipment" ,       "value" => '', "validated" => false, "to_validate" => "true"},
                   {"name" => 'purchase_order_nbr', "description"=> "Purchase Order" , "value" => '', "validated" => false, "to_validate" => "true"},
                   {"name" => 'case',               "description"=> "Case",            "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'lot_number',         "description"=> "Lot Number",      "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'coo',                "description"=> "Coo",             "value" => '', "validated" => false, "to_validate" => "true"},
                   {"name" => 'item',               "description"=> "Item" ,           "value" => '', "validated" => false, "to_validate" => "true"},
                   {"name" => 'quantity',           "description"=> "Quantity",        "value" => '', "validated" => false, "to_validate" => "true"},
+                  {"name" => 'inner_pack',         "description"=> "Inner Pack",      "value" => '', "validated" => false ,"to_validate" => "true" },
+                  {"name" => 'coo',                "description"=> "Coo",             "value" => '', "validated" => false, "to_validate" => "true"},
+                  {"name" => 'lot_number',         "description"=> "Lot Number",      "value" => '', "validated" => false, "to_validate" => "true"},
                   {"name" => 'serial_nbr',         "description"=> "Serial Number",   "value" => '', "validated" => false, "to_validate" => "true", "temp_data"=>[]},
-                  {"name" => 'inner_pack',         "description"=> "Inner Pack",      "value" => '', "validated" => false ,"to_validate" => "true" }
                 ]
     @basic_parameters = session[:basic_parameters]        
     @shipment = ShipmentReceive.new(shipment, @basic_parameters).prepare_shipment_receiving_screen
