@@ -1,11 +1,16 @@
 Rails.application.routes.draw do
 
 
-  namespace :shipment do
-  post ':shipment_nbr/receive',  action: 'receive'
-  post ':to_validate/validate',  action: 'validate'
+  namespace :login do
+    get '',  action: 'index'
+    post '',  action: 'create'
+  end
 
-end
+  namespace :shipment do
+    post ':shipment_nbr/receive',  action: 'receive'
+    post ':to_validate/validate',  action: 'validate'
+  end
+
 
   resources :mainmenu,  controller: 'main_menu'
   resources :shipmentreceive, controller: 'shipment_receive'

@@ -3,11 +3,11 @@ require 'rest_client'
 class ShipmentReceive
   attr_accessor :shipment, :basic_parameters, :config_list
   
-  def initialize(shipment, basic_parameters)
+  def initialize(shipment, basic_parameters, token)
     @shipment=shipment
     @basic_parameters = basic_parameters
-    @config_list = GlobalConfiguration.new.configuration_list_key_value(module: 'RECEIVING')
-    p @config_list
+    @config_list = GlobalConfiguration.new.configuration_list_key_value({module: 'RECEIVING'}, token)
+    @token = token
   end
 
   def prepare_shipment_receiving_screen
@@ -167,7 +167,7 @@ private
         innerpack_qty:  shipment_payload["inner_pack"]
     }
     shipment = shipment.merge(serial_nbr:  shipment["serial_nbr"]) if shipment.has_key?("serial_nbr")
-    response = RestClient.post(url, shipment: shipment) { | responses, request, result, &block |
+    response = RestClient.post(url, shipment: shipment, authorization: @token) { | responses, request, result, &block |
       case responses.code
         when 200, 201, 422, 204
           responses
@@ -202,7 +202,7 @@ private
     shipment = shipment.merge(serial_nbr:  shipment["serial_nbr"]) if shipment.has_key?("serial_nbr")
 
     response = RestClient.post(url,
-    shipment: shipment){ | responses, request, result, &block |
+    shipment: shipment, authorization: @token){ | responses, request, result, &block |
       case responses.code
       when 200, 201, 422, 204
         responses

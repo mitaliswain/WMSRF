@@ -18,8 +18,9 @@ class ShipmentReceiveController < ApplicationController
                   {"name" => 'lot_number',         "description"=> "Lot Number",      "value" => '', "validated" => false, "to_validate" => "true"},
                   {"name" => 'serial_nbr',         "description"=> "Serial Number",   "value" => '', "validated" => false, "to_validate" => "true", "temp_data"=>[]},
                 ]
-    @basic_parameters = session[:basic_parameters]        
-    @shipment = ShipmentReceive.new(shipment, @basic_parameters).prepare_shipment_receiving_screen
+    @basic_parameters = session[:basic_parameters]   
+    token = session[:token]     
+    @shipment = ShipmentReceive.new(shipment, @basic_parameters, token).prepare_shipment_receiving_screen
     session[:shipment] = @shipment
     @error = ''
   end 
@@ -39,8 +40,8 @@ class ShipmentReceiveController < ApplicationController
   def shipment_receive
     @basic_parameters = session[:basic_parameters]
     @shipment = session[:shipment]
-
-    processed_response = ShipmentReceive.new(deep_copy(@shipment), @basic_parameters).process_receiving(params["name"], params["value"])
+    token = session[:token]
+    processed_response = ShipmentReceive.new(deep_copy(@shipment), @basic_parameters, token).process_receiving(params["name"], params["value"])
     session[:shipment] = processed_response[:shipment]
     if processed_response[:status] == '201'
       set_unpalletized_case

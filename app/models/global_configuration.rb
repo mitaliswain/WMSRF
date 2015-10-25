@@ -2,10 +2,10 @@ require 'rest_client'
 
 class GlobalConfiguration
   
-  def configuration_list(params = {})    
+  def configuration_list(params = {}, token)    
     
     url = Properties.getUrl + "/configuration" 
-    response = RestClient.get url, {:params => {:selection => params}}
+    response = RestClient.get url, {:params => {:selection => params}, authorization: token}
     return JSON.parse(response)       
   end
   
@@ -29,9 +29,9 @@ class GlobalConfiguration
   end
   
  
- def configuration_list_key_value(params = {})
+ def configuration_list_key_value(params = {}, token)
    config_key_value_pair = {}
-   configuration_list(params).each do |config|
+   configuration_list(params, token).each do |config|
      config_key_value_pair = config_key_value_pair.merge({config['configuration_header']["key"] => config['configuration_header']["value"]})
    end
    config_key_value_pair.symbolize_keys
