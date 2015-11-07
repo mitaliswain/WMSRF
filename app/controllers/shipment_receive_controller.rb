@@ -6,19 +6,8 @@ class ShipmentReceiveController < ApplicationController
    end
    
   def new 
-    shipment =   [
-                  {"name" => 'location',           "description"=> "Location" ,       "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'shipment_nbr',       "description"=> "Shipment" ,       "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'purchase_order_nbr', "description"=> "Purchase Order" , "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'case',               "description"=> "Case",            "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'item',               "description"=> "Item" ,           "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'quantity',           "description"=> "Quantity",        "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'inner_pack',         "description"=> "Inner Pack",      "value" => '', "validated" => false ,"to_validate" => "true" },
-                  {"name" => 'coo',                "description"=> "Coo",             "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'lot_number',         "description"=> "Lot Number",      "value" => '', "validated" => false, "to_validate" => "true"},
-                  {"name" => 'serial_nbr',         "description"=> "Serial Number",   "value" => '', "validated" => false, "to_validate" => "true", "temp_data"=>[]},
-                ]
-    @basic_parameters = session[:basic_parameters]   
+    shipment = Shipment.shipment_template
+    @basic_parameters = session[:basic_parameters]
     token = session[:token]     
     @shipment = ShipmentReceive.new(shipment, @basic_parameters, token).prepare_shipment_receiving_screen
     session[:shipment] = @shipment
@@ -44,7 +33,7 @@ class ShipmentReceiveController < ApplicationController
     processed_response = ShipmentReceive.new(deep_copy(@shipment), @basic_parameters, token).process_receiving(params["name"], params["value"])
     session[:shipment] = processed_response[:shipment]
     if processed_response[:status] == '201'
-      set_unpalletized_case
+      set_un_palletized_case
     end
 
     @shipment = session[:shipment]
@@ -52,7 +41,7 @@ class ShipmentReceiveController < ApplicationController
     render 'new.html.erb'
   end
 
-  def set_unpalletized_case
+  def set_un_palletized_case
 
     unpalletized_case = []
     unpalletized_case  =  session[:unpalletized_case].nil? ? [] : session[:unpalletized_case]
@@ -61,9 +50,7 @@ class ShipmentReceiveController < ApplicationController
   end
 
   def set_case_palletize_screen
-    @palletize =   [
-        {"name" => 'pallet',  "description"=> "Pallet ID" ,       "value" => '', "validated" => false, "to_validate" => "true"},
-      ]
+    @palletize = Shipment.palletize.template
     @basic_parameters = session[:basic_parameters]
     render 'palletize.html.erb'
   end

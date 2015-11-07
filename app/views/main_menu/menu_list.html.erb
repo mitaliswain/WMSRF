@@ -1,0 +1,16 @@
+
+<% @menu_list.each_with_index do |menu, index| %>
+    <div class="rf"><label><%= menu[:id] %>. <%= menu[:description] %></label></div>
+<% end %>
+
+
+<%= form_tag("/main_menu/menu_list") do %>
+<div>
+    <div class="rf">
+    <input type="text" name="option"></div>
+    <div class="rf">
+	<%= submit_tag("Proceed", style:"float: left") %>
+    </div>
+</div>
+
+<%end%>

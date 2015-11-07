@@ -11,10 +11,19 @@ Rails.application.routes.draw do
     post ':to_validate/validate',  action: 'validate'
   end
 
+  namespace :main_menu do
+    get  '/new',  action: 'new'
+    post  '/', action: 'create'
+    get '/menu_list',  action: 'menu_list'
+    post '/menu_list', action: 'menu_list_option'
+  end
 
-  resources :mainmenu,  controller: 'main_menu'
+
+  #resources :mainmenu,  controller: 'main_menu'
+
   resources :shipmentreceive, controller: 'shipment_receive'
   resources :case_putaway, controller: 'case_putaway'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

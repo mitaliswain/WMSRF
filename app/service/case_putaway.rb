@@ -3,10 +3,11 @@ require 'rest_client'
 class CasePutaway
   attr_accessor :putaway, :basic_parameters, :config_list
 
-  def initialize(putaway, basic_parameters)
+  def initialize(putaway, basic_parameters, token=nil)
     @putaway=putaway
     @basic_parameters = basic_parameters
-    @config_list = GlobalConfiguration.new.configuration_list_key_value(module: 'PUTAWAY')
+    @token = token
+    @config_list = GlobalConfiguration.new.configuration_list_key_value({module: 'PUTAWAY'}, @token)
   end
 
   def prepare_putaway_receiving_screen
@@ -33,7 +34,7 @@ class CasePutaway
   end
 
   def case_putaway_and_reset_the_input
-    response = case_putaway
+    response = putaway_case
     reset_putaway if response["status"] == "201"
     response
   end
@@ -42,9 +43,15 @@ class CasePutaway
     response["status"] == '200' && !any_more_to_validate?
   end
 
+  def reset_putaway
+    self.putaway.each_with_index do |putaway_item, index|
+        self.putaway[index]["value"] = ""
+        self.putaway[index]["validated"] = false
+    end
+  end
+
 
   def get_error_message(response)
-    p response
     case response["status"]
       when "200"
         ""
@@ -74,14 +81,13 @@ class CasePutaway
         break
       end
     end
-    p putaway
     putaway
   end
 
   def putaway_case
 
     putaway = extract_putaway
-    url = Properties.getUrl + '/putaway/' + putaway["case_id"] + '/receive'
+    url = Properties.getUrl + '/putaway/' + putaway["case_id"] + '/putaway'
 
     putaway = {
         client:     self.basic_parameters["client"],
@@ -89,7 +95,8 @@ class CasePutaway
         channel:    nil,
         building:   nil,
         case_id:    putaway["case_id"],
-        location:   putaway["location"]
+        location:   putaway["location"],
+        authorization: @token
     }
     response = RestClient.post(url, putaway: putaway){ | responses, request, result, &block |
       case responses.code
@@ -115,7 +122,8 @@ class CasePutaway
         channel:    nil,
         building:   nil,
         case_id:    putaway_payload["case_id"],
-        location:   putaway_payload["location"]
+        location:   putaway_payload["location"],
+        authorization: @token
     }
     response = RestClient.post(url, putaway: putaway_hash) { | responses, request, result, &block |
       case responses.code

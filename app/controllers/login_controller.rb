@@ -8,7 +8,7 @@ class LoginController < ApplicationController
 
     if message["status"] == "200"
       session[:token] = message["additional_info"][0]["token"]
-      redirect_to '/mainmenu/new' 
+      redirect_to '/main_menu/new'
     else
       render 'index.html.erb'
     end
