@@ -1,7 +1,9 @@
 <%= form_tag("/login") do %>
-    <div class="nav-bar"><label style="font-color: white">Login</label></div>
-    <label>Client......:</label><input type="text" id="client" name="client"></br>
-    <label>User........:</label><input type="text" id="userid" name="userid"></br>
-    <label>Password.:</label><input type="password" id="password" name="password"></br>
-    <%= submit_tag("Login")%>
+    <div style="width: 1000px; height: 50px">
+        <div class="nav-bar"><label style="font-color: white">Login</label></div>
+        <div><label>Client</label><input type="text" id="client" name="client"></div>
+        <div><label>User</label><input type="text" id="userid" name="userid"></div>
+        <div><label>Password</label><input type="password" id="password" name="password"></div>
+        <div><%= submit_tag("Login")%></div>
+    </div>
 <% end %>

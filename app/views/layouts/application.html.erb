@@ -17,7 +17,7 @@
       .button-warning,
       .button-secondary {
           color: white;
-          border-radius: 4px;
+          border-radius: 0px;
           text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
           font-size: 20px;
           font-family: Arial, Helvetica, sans-serif;
@@ -41,29 +41,27 @@
       }
 
      .nav-bar {
-         min-width: 250px;
-         min-height: 50px;
+         max-width: 25%;
+         min-height: 100%;
          background-color: blue;
          color: white;
+         text-align: center;
+         vertical-align: middle;
      }
 
 
-  input[type="text"],
-  input[type="password"]{
-      min-width: 250px;
-      min-height: 30px;
-  }
+      input[type="text"],
+      input[type="password"]{
+          min-width: 25%;
+          min-height: 100%;
+      }
 
-  label {
-      min-width: 100px;
-      min-height: 50px;
-  }
 
-  input[type="submit"] {
-      min-width: 250px;
-      min-height: 50px;
-  }
-
+      input[type="submit"],
+      input[type="button"] {
+          min-width: 250px;
+          min-height: 50px;
+      }
 
   </style>
 </head>
