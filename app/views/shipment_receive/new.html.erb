@@ -6,7 +6,7 @@
          <% @shipment.each_with_index do |receive, index| %>
             <% if receive["to_validate"] == "true"%>
                 <% if receive["validated"] == false %>
-                    <%= editable_input(receive)%>
+                    <div><%= editable_input(receive)%></div>
                     <div><input type="hidden" name="name" value="<%=receive["name"]%>"></div>
                         <%break%>
                 <% else %>
@@ -21,8 +21,8 @@
         </div>
 
         <div>
-          <%= submit_tag("Receive", class: "button-secondary") %>
-          <%= submit_tag("Palletize", class: "button-secondary") %>
+          <%= submit_tag("Receive", class: "btn") %>
+          <%= submit_tag("Palletize", class: "btn") %>
         </div>
         </div>
     </div>
