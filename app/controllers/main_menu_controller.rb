@@ -2,7 +2,7 @@ class MainMenuController < ApplicationController
   def new
     @basic_parameters = Menu.basic_parameters(params, JsonWebToken::JsonWebToken.decode(session[:token]))
   rescue Exception=> e
-    render json: {error: e}
+    render json: {error: error.backtrace}
   end
 
   def create
