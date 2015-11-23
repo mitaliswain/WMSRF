@@ -1,6 +1,8 @@
 class MainMenuController < ApplicationController
   def new
     @basic_parameters = Menu.basic_parameters(params, JsonWebToken::JsonWebToken.decode(session[:token]))
+  rescue Exception=> e
+    render text: e
   end
 
   def create
