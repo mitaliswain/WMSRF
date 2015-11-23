@@ -50,7 +50,7 @@ class ShipmentReceiveController < ApplicationController
   end
 
   def set_case_palletize_screen
-    @palletize = Shipment.palletize.template
+    @palletize = Shipment.pallatize_template
     @basic_parameters = session[:basic_parameters]
     render 'palletize.html.erb'
   end

@@ -5,10 +5,7 @@ class CasePutawayController < ApplicationController
   end
 
   def new
-    putaway =   [
-        {"name" => 'case_id',           "description"=> "Case" ,       "value" => '', "validated" => false, "to_validate" => "Yes"},
-        {"name" => 'location',       "description"=> "Location" ,       "value" => '', "validated" => false, "to_validate" => "Yes"}
-    ]
+    putaway =   Putaway.putaway_template
     @basic_parameters = session[:basic_parameters]
     token = session[:token]
     @putaway = CasePutaway.new(putaway, @basic_parameters, token).prepare_putaway_receiving_screen

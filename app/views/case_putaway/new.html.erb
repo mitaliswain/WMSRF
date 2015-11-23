@@ -1,26 +1,30 @@
 <%= form_tag("/case_putaway") do %>
 
- User:<%=@user%> <%=@basic_parameters["client"]%>/<%=@basic_parameters["warehouse"]%>/<%=@basic_parameters["building"]%>/<%=@basic_parameters["channel"]%>
- <% @putaway.each_with_index do |putaway, index| %>
- 	<% if putaway["to_validate"] == "Yes"%>
-	 	<% if putaway["validated"] == false %>
-			<%= editable_input(putaway)%>
-			<input type="hidden" name="name" value="<%=putaway["name"]%>">
-				<%break%>
-		<% else %>
-			<div> <%= putaway["description"] %> : <%= putaway["value"] %></div>
-		<% end %>	
-	<%end%>	
- <% end %>
+<div style="width: 1000px; height: 1000px">
+    <div class="nav-bar"><label style="font-color: white">Case Putaway</label></div>
+
+     User:<%=@user%> <%=@basic_parameters["client"]%>/<%=@basic_parameters["warehouse"]%>/<%=@basic_parameters["building"]%>/<%=@basic_parameters["channel"]%>
+     <% @putaway.each_with_index do |putaway, index| %>
+        <% if putaway["to_validate"] == "Yes"%>
+            <% if putaway["validated"] == false %>
+                <%= editable_input(putaway)%>
+                <input type="hidden" name="name" value="<%=putaway["name"]%>">
+                    <%break%>
+            <% else %>
+                <div> <%= putaway["description"] %> : <%= putaway["value"] %></div>
+            <% end %>
+        <%end%>
+     <% end %>
 
 
-<div>
-  <%= content_tag(:label, "Error: " +  @error.to_s) if  !@error.blank?%>
-</div>  
+    <div>
+      <%= content_tag(:label, "Error: " +  @error.to_s) if  !@error.blank?%>
+    </div>
 
-<div>
-  <%= submit_tag("Putaway") %>
-</div>  
+    <div>
+      <%= submit_tag("Putaway", class: "btn") %>
+    </div>
+    </div>
 </div>
 
 <% end %>
