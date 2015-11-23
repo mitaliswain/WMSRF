@@ -1,27 +1,29 @@
 <%= form_tag("/shipmentreceive") do %>
+<div style="width: 1000px; height: 1000px">
+  <div class="nav-bar"><label style="font-color: white">Receive Case</label></div>
 
- User:<%=@user%> <%=@basic_parameters["client"]%>/<%=@basic_parameters["warehouse"]%>/<%=@basic_parameters["building"]%>/<%=@basic_parameters["channel"]%>
- <% @shipment.each_with_index do |receive, index| %>
- 	<% if receive["to_validate"] == "true"%>
-	 	<% if receive["validated"] == false %>			
-			<%= editable_input(receive)%>
-			<input type="hidden" name="name" value="<%=receive["name"]%>">
-				<%break%>
-		<% else %>
-			<div> <%= receive["description"] %>: <%= receive["value"] %></div>
-		<% end %>	
-	<%end%>	
- <% end %>
+         User:<%=@user%> <%=@basic_parameters["client"]%>/<%=@basic_parameters["warehouse"]%>/<%=@basic_parameters["building"]%>/<%=@basic_parameters["channel"]%>
+         <% @shipment.each_with_index do |receive, index| %>
+            <% if receive["to_validate"] == "true"%>
+                <% if receive["validated"] == false %>
+                    <%= editable_input(receive)%>
+                    <div><input type="hidden" name="name" value="<%=receive["name"]%>"></div>
+                        <%break%>
+                <% else %>
+                    <div> <%= receive["description"] %>: <%= receive["value"] %></div>
+                <% end %>
+            <%end%>
+         <% end %>
 
 
-<div>
-  <%= content_tag(:label, "Error: " +  @error.to_s) if  !@error.blank?%>
-</div>  
+        <div>
+          <%= content_tag(:label, "Error: " +  @error.to_s) if  !@error.blank?%>
+        </div>
 
-<div>
-  <%= submit_tag("Receive", class: "button-secondary") %>
-  <%= submit_tag("Palletize", class: "button-secondary") %>
-</div>  
-</div>
-
+        <div>
+          <%= submit_tag("Receive", class: "button-secondary") %>
+          <%= submit_tag("Palletize", class: "button-secondary") %>
+        </div>
+        </div>
+    </div>
 <% end %>

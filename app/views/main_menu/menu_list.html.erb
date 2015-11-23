@@ -1,17 +1,14 @@
+<%= form_tag("/main_menu/menu_list") do %>
 <div style="width: 1000px; height: 1000px">
   <div class="nav-bar"><label style="font-color: white">Select Option</label></div>
 
-  <% @menu_list.each_with_index do |menu, index| %>
-    <div class="rf"><label><%= menu[:id] %>. <%= menu[:description] %></label></div>
-<% end %>
 
+      <% @menu_list.each_with_index do |menu, index| %>
+        <div class="rf"><label><%= menu[:id] %>. <%= menu[:description] %></label></div>
+      <% end %>
 
-<%= form_tag("/main_menu/menu_list") do %>
-    <div class="rf">
-    <input type="text" name="option"></div>
-    <div class="rf">
-	<%= submit_tag("Proceed", style:"float: left") %>
+      <div><input type="text" name="option"></div>
+      <div></div><%= submit_tag("Proceed", class: "btn") %></div>
     </div>
-</div>
 
 <%end%>
