@@ -1,8 +1,8 @@
 class Menu
 
-  def self.basic_parameters(params)
-    [ { "name" => 'client', "description"=> "Client", "value" =>params[:client] },
-      { "name" => 'warehouse', "description"=> "Warehouse", "value" =>params[:warehouse] } ,
+  def self.basic_parameters(params, token)
+    [ { "name" => 'client', "description"=> "Client", "value" =>params[:client] || token["client"] },
+      { "name" => 'warehouse', "description"=> "Warehouse", "value" =>params[:warehouse] || token["preferred_warehouse"] } ,
       { "name" => 'building', "description"=> "Building", "value" =>params[:building] } ,
       { "name" => 'channel', "description"=> "Channel", "value" =>params[:channel] } ]
   end

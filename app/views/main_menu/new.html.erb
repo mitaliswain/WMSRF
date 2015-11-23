@@ -1,7 +1,11 @@
 <%= form_tag("/main_menu") do %>
-<div>
-	<% @basic_parameters.each_with_index do |item, index| %>
-			<div><input type="text" name="<%=item["name"]%>"  placeholder="<%= item["description"]%>" class="rf"></div>
+
+<div style="width: 1000px; height: 1000px">
+    <div class="nav-bar"><label style="font-color: white">Select Warehouse</label></div>
+
+    <% @basic_parameters.each_with_index do |item, index| %>
+            <div><%= item["description"]%></div>
+			<div><input type="text" name="<%=item["name"]%>" value="<%=item["value"] %>"></div>
 	<% end %>
 	<%= submit_tag("Proceed") %>
 </div>

@@ -1,6 +1,7 @@
 class MainMenuController < ApplicationController
   def new
-    @basic_parameters = Menu.basic_parameters(params)
+    p JsonWebToken::JsonWebToken.decode(session[:token])
+    @basic_parameters = Menu.basic_parameters(params, JsonWebToken::JsonWebToken.decode(session[:token]))
   end
 
   def create
@@ -11,7 +12,6 @@ class MainMenuController < ApplicationController
   end
 
   def menu_list
-    p 'here'
     @menu_list = Menu.menu_list
   end
 
