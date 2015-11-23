@@ -1,10 +1,11 @@
 require "base64"
+require "json"
 
 module JsonWebToken
    class JsonWebToken
 
     def self.decode(token)
-      [Base64.decode64(token.split('.')[0]), Base64.decode64(token.split('.')[1])]
+      JSON.parse(Base64.decode64(token.split('.')[1]))
     end
   end
 end
