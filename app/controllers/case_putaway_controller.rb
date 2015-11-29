@@ -5,7 +5,7 @@ class CasePutawayController < ApplicationController
   end
 
   def new
-    putaway =   Putaway.putaway_template
+    putaway =   Template.putaway_template
     @basic_parameters = session[:basic_parameters]
     token = session[:token]
     @putaway = CasePutaway.new(putaway, @basic_parameters, token).prepare_putaway_receiving_screen

@@ -1,6 +1,6 @@
 require 'rest_client'
 
-class ShipmentReceive
+class CaseReceive
   attr_accessor :shipment, :basic_parameters, :config_list
   
   def initialize(shipment, basic_parameters, token)

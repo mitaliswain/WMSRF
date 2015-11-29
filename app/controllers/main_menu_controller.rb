@@ -1,6 +1,6 @@
 class MainMenuController < ApplicationController
   def new
-    @basic_parameters = Menu.basic_parameters(params, JsonWebToken::JsonWebToken.decode(session[:token]))
+    @basic_parameters = Template.basic_parameters(params, JsonWebToken::JsonWebToken.decode(session[:token]))
   rescue Exception=> error
     render json: {error: error}
   end

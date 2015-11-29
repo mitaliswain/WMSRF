@@ -1,11 +1,5 @@
 class Menu
 
-  def self.basic_parameters(params, token)
-    [ { "name" => 'client', "description"=> "Client", "value" =>params[:client] || token["client"] },
-      { "name" => 'warehouse', "description"=> "Warehouse", "value" =>params[:warehouse] || token["preferred_warehouse"] } ,
-      { "name" => 'building', "description"=> "Building", "value" =>params[:building] } ,
-      { "name" => 'channel', "description"=> "Channel", "value" =>params[:channel] } ]
-  end
 
   def self.menu_list
     [{id: 1, description: 'Receive Case', path: '/shipmentreceive/new'},
@@ -14,4 +8,4 @@ class Menu
   end
 
 
-  end
+end

@@ -6,10 +6,10 @@ class ShipmentReceiveController < ApplicationController
    end
    
   def new 
-    shipment = Receive.shipment_template
+    shipment = Template.shipment_template
     @basic_parameters = session[:basic_parameters]
     token = session[:token]     
-    @shipment = ShipmentReceive.new(shipment, @basic_parameters, token).prepare_shipment_receiving_screen
+    @shipment = CaseReceive.new(shipment, @basic_parameters, token).prepare_shipment_receiving_screen
     session[:shipment] = @shipment
     @error = ''
   end 
@@ -30,7 +30,7 @@ class ShipmentReceiveController < ApplicationController
     @basic_parameters = session[:basic_parameters]
     @shipment = session[:shipment]
     token = session[:token]
-    processed_response = ShipmentReceive.new(deep_copy(@shipment), @basic_parameters, token).process_receiving(params["name"], params["value"])
+    processed_response = CaseReceive.new(deep_copy(@shipment), @basic_parameters, token).process_receiving(params["name"], params["value"])
     session[:shipment] = processed_response[:shipment]
     if processed_response[:status] == '201'
       set_un_palletized_case
@@ -50,7 +50,7 @@ class ShipmentReceiveController < ApplicationController
   end
 
   def set_case_palletize_screen
-    @palletize = Receive.pallatize_template
+    @palletize = Template.pallatize_template
     @basic_parameters = session[:basic_parameters]
     render 'palletize.html.erb'
   end

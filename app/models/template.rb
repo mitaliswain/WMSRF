@@ -1,4 +1,4 @@
-class Shipment
+class Template
   def self.shipment_template
     [
         {"name" => 'location',           "description"=> "Location" ,       "value" => '', "validated" => false, "to_validate" => "true"},
@@ -19,4 +19,21 @@ class Shipment
         {"name" => 'pallet',  "description"=> "Pallet ID" ,       "value" => '', "validated" => false, "to_validate" => "true"},
     ]
   end
+
+
+  def self.putaway_template
+    [
+        {"name" => 'case_id',           "description"=> "Case" ,       "value" => '', "validated" => false, "to_validate" => "Yes"},
+        {"name" => 'location',       "description"=> "Location" ,       "value" => '', "validated" => false, "to_validate" => "Yes"}
+    ]
+  end
+
+
+  def self.basic_parameters(params, token)
+    [ { "name" => 'client', "description"=> "Client", "value" =>params[:client] || token["client"] },
+      { "name" => 'warehouse', "description"=> "Warehouse", "value" =>params[:warehouse] || token["preferred_warehouse"] } ,
+      { "name" => 'building', "description"=> "Building", "value" =>params[:building] } ,
+      { "name" => 'channel', "description"=> "Channel", "value" =>params[:channel] } ]
+  end
+
 end
