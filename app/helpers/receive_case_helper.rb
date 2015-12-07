@@ -1,4 +1,4 @@
-module ShipmentReceiveHelper
+module ReceiveCaseHelper
   
 
   def editable_input(receive)

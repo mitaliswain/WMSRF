@@ -1,5 +1,5 @@
 class Template
-  def self.shipment_template
+  def self.case_receive_template
     [
         {"name" => 'location',           "description"=> "Location" ,       "value" => '', "validated" => false, "to_validate" => "true"},
         {"name" => 'shipment_nbr',       "description"=> "Shipment" ,       "value" => '', "validated" => false, "to_validate" => "true"},
@@ -11,6 +11,17 @@ class Template
         {"name" => 'coo',                "description"=> "Coo",             "value" => '', "validated" => false, "to_validate" => "true"},
         {"name" => 'lot_number',         "description"=> "Lot Number",      "value" => '', "validated" => false, "to_validate" => "true"},
         {"name" => 'serial_nbr',         "description"=> "Serial Number",   "value" => '', "validated" => false, "to_validate" => "true", "temp_data"=>[]},
+    ]
+  end
+
+  def self.pallet_receive_template
+    [
+        {"name" => 'receiving_type',     "description"=> "Receiving Type" , "value" => 'Pallet', "validated" => true,  "to_validate" => "false"},
+        {"name" => 'shipment_nbr',       "description"=> "Shipment" ,       "value" => '', "validated" => false, "to_validate" => "true"},
+        {"name" => 'location',           "description"=> "Location" ,       "value" => '', "validated" => false, "to_validate" => "true"},
+        {"name" => 'pallet',             "description"=> "Pallet ID" ,      "value" => '', "validated" => false, "to_validate" => "true"},
+        {"name" => 'inner_pack',         "description"=> "Inner Pack",      "value" => '', "validated" => false ,"to_validate" => "true" }
+
     ]
   end
 

@@ -27,15 +27,15 @@ private
 
   def prepare_for_serial_number_tracking_configuration
     ["serial_nbr"].each do |item|
-      index = shipment.find_index {|field| field["name"] == item}
-      self.shipment.delete_at(index) if self.config_list[:Serial_Number_Tracking] == 'false'
+      index = self.shipment.find_index {|field| field["name"] == item}
+      self.shipment.delete_at(index) if self.config_list[:Serial_Number_Tracking] == 'false' if index
     end
   end
 
   def prepare_for_lot_tracking_configuration
     ["lot_number"].each do |item|
-      index = shipment.find_index {|field| field["name"] == item}
-      self.shipment.delete_at(index) if self.config_list[:Lot_Tracking_Mode] == 'false'
+      index = self.shipment.find_index {|field| field["name"] == item}
+      self.shipment.delete_at(index) if self.config_list[:Lot_Tracking_Mode] == 'false' if index
     end
   end
 
@@ -103,7 +103,7 @@ private
   end  
   
   def reset_shipment
-      items_not_to_be_reset = ["shipment_nbr", "location"]
+      items_not_to_be_reset = ["shipment_nbr", "location", "receiving_type"]
       self.shipment.each_with_index do |shipment_item, index|
         if items_not_to_be_reset.select{|item| item == shipment_item["name"]}.empty?
             self.shipment[index]["value"] = ""
@@ -156,6 +156,7 @@ private
         warehouse:  self.basic_parameters["warehouse"],
         channel:    nil,
         building:   nil,
+        pallet:         shipment_payload["pallet"],
         shipment_nbr:   shipment_payload["shipment_nbr"],
         location:       shipment_payload["location"],
         case_id:        shipment_payload["case"],
@@ -190,6 +191,8 @@ private
         warehouse:  self.basic_parameters["warehouse"],
         channel:    nil,
         building:   nil,
+        receiving_type: shipment["receiving_type"],
+        pallet:         shipment["pallet"],
         shipment_nbr:   shipment["shipment_nbr"],
         location:       shipment["location"],
         case_id:        shipment["case"],

@@ -1,0 +1,28 @@
+<%= form_tag("/palletreceive") do %>
+<div style="width: 1000px; height: 1000px">
+  <div class="nav-bar"><label style="font-color: white">Receive Pallet</label></div>
+
+         User:<%=@user%> <%=@basic_parameters["client"]%>/<%=@basic_parameters["warehouse"]%>/<%=@basic_parameters["building"]%>/<%=@basic_parameters["channel"]%>
+         <% @shipment.each_with_index do |receive, index| %>
+            <% if receive["to_validate"] == "true"%>
+                <% if receive["validated"] == false %>
+                    <div><%= editable_input(receive)%></div>
+                    <div><input type="hidden" name="name" value="<%=receive["name"]%>"></div>
+                        <%break%>
+                <% else %>
+                    <div> <%= receive["description"] %>: <%= receive["value"] %></div>
+                <% end %>
+            <%end%>
+         <% end %>
+
+
+        <div>
+          <%= content_tag(:label, "Error: " +  @error.to_s) if  !@error.blank?%>
+        </div>
+
+        <div>
+          <%= submit_tag("Receive", class: "btn") %>
+        </div>
+        </div>
+    </div>
+<% end %>

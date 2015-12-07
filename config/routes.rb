@@ -21,7 +21,8 @@ Rails.application.routes.draw do
 
   #resources :mainmenu,  controller: 'main_menu'
 
-  resources :shipmentreceive, controller: 'shipment_receive'
+  resources :shipmentreceive, controller: 'receive_case'
+  resources :palletreceive, controller: 'receive_pallet'
   resources :case_putaway, controller: 'case_putaway'
 
   # The priority is based upon order of creation: first created -> highest priority.

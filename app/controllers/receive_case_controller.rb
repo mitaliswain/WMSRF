@@ -1,12 +1,12 @@
 require 'json'
-class ShipmentReceiveController < ApplicationController
+class ReceiveCaseController < ApplicationController
 
   def index
     redirect_to :action => 'new'
    end
    
   def new 
-    shipment = Template.shipment_template
+    shipment = Template.case_receive_template
     @basic_parameters = session[:basic_parameters]
     token = session[:token]     
     @shipment = CaseReceive.new(shipment, @basic_parameters, token).prepare_shipment_receiving_screen
@@ -17,7 +17,7 @@ class ShipmentReceiveController < ApplicationController
   def create
     case params["commit"]
       when  'Receive'
-        shipment_receive
+        case_receive
       when 'Palletize'
         set_case_palletize_screen
       when 'Process Pallet'
@@ -26,7 +26,7 @@ class ShipmentReceiveController < ApplicationController
     end
   end
 
-  def shipment_receive
+  def case_receive
     @basic_parameters = session[:basic_parameters]
     @shipment = session[:shipment]
     token = session[:token]
